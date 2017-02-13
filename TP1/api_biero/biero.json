@@ -1,0 +1,474 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Biero API",
+        "description": "Webservice pour accéder aux données du catalogue de bière",
+        "version": "1.0.0"
+    },
+    "host": "127.0.0.1:8000",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/webservice/php",
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "basicAuth": {
+            "type": "basic"
+        }
+    },
+    "paths": {
+        "/biere": {
+            "get": {
+                "summary": "Liste des bières",
+                "description": "Retourne la liste des bières du répertoire.\n",
+                "tags": [
+                    "Biere"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Un tableau (Array) des bières",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Biere"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Ajouter une nouvelle bière",
+                "tags": [
+                    "Biere"
+                ],
+                "description": "Ajout d'une nouvelle bière dans le répertoire. Action réservée aux administrateurs. Demande une authentification.",
+                "consumes": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "biere",
+                        "in": "body",
+                        "description": "Nom de la bière",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "nom": {
+                                    "type": "string",
+                                    "description": "Nom de la bière."
+                                },
+                                "brasserie": {
+                                    "type": "string",
+                                    "description": "Nom de la brasserie."
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description de la bière."
+                                },
+                                "image": {
+                                    "type": "string",
+                                    "description": "URL de l'image."
+                                }
+                            },
+                            "required": [
+                                "nom",
+                                "brasserie",
+                                "description"
+                            ],
+                            "example": {
+                                "nom": "IPA du diable",
+                                "brasserie": "Ma breasserie",
+                                "description": "Une bière de grande qualité avec beaucoup d'amerturme",
+                                "image": ""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "Authentification refusé"
+                    }
+                }
+            }
+        },
+        "/biere/{id_biere}": {
+            "get": {
+                "summary": "Information d'une bière",
+                "description": "Retourne l'information d'une bière du répertoire.\n",
+                "tags": [
+                    "Biere"
+                ],
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "in": "path",
+                        "description": "Identifiant de la bière",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Une bière",
+                        "schema": {
+                            "$ref": "#/definitions/Biere"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Effacer une bière",
+                "description": "Effacer une bière du répertoire. Action réservée aux administrateurs. Demande une authentification.",
+                "tags": [
+                    "Biere"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "in": "path",
+                        "description": "Identifiant de la bière",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Modifier une biere",
+                "tags": [
+                    "Biere"
+                ],
+                "description": "Modification d'une bière dans le répertoire. Action réservée aux administrateurs. Demande une authentification.",
+                "consumes": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "in": "path",
+                        "description": "Identifiant de la bière",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "biere",
+                        "in": "body",
+                        "description": "Détails de la bière",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "nom": {
+                                    "type": "string",
+                                    "description": "Nom de la bière."
+                                },
+                                "brasserie": {
+                                    "type": "string",
+                                    "description": "Nom de la brasserie."
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description de la bière."
+                                },
+                                "image": {
+                                    "type": "string",
+                                    "description": "URL de l'image."
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "Authentification refusé"
+                    }
+                }
+            }
+        },
+        "/biere/{id_biere}/commentaire": {
+            "get": {
+                "summary": "Liste des commentaires sur une bière",
+                "tags": [
+                    "Biere",
+                    "Commentaire"
+                ],
+                "description": "Retourne la liste des commentaires fait sur une bière du répertoire.\n",
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "in": "path",
+                        "description": "Identifiant de la bière",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des commentaires",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Commentaire"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Ajouter un commentaire sur une bière",
+                "tags": [
+                    "Biere",
+                    "Commentaire"
+                ],
+                "description": "Ajout d'un commentaire sur une bière",
+                "consumes": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "type": "integer",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identifiant de la bière"
+                    },
+                    {
+                        "name": "commentaire",
+                        "in": "body",
+                        "description": "Le commentaire sur la bière",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "courriel": {
+                                    "type": "string",
+                                    "description": "Courriel de l'usager."
+                                },
+                                "commentaire": {
+                                    "type": "string",
+                                    "description": "Commentaire de l'usager."
+                                }
+                            },
+                            "required": [
+                                "courriel",
+                                "commentaire"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Valeur de l'identifiant de la bière"
+                    }
+                }
+            }
+        },
+        "/biere/{id_biere}/note": {
+            "get": {
+                "summary": "Note moyenne d'une bière",
+                "tags": [
+                    "Biere",
+                    "Note"
+                ],
+                "description": "Donne la note moyenne de la bière\n",
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "in": "path",
+                        "description": "Identifiant de la bière",
+                        "required": true,
+                        "type": "number",
+                        "format": "double"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Note moyenne",
+                        "schema": {
+                            "$ref": "#/definitions/Note"
+                        }
+                    },
+                    "400": {
+                        "description": "Requête invalide"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Ajouter ou modifier une note sur une bière",
+                "tags": [
+                    "Biere",
+                    "Note"
+                ],
+                "description": "Permet de laisser une note ou de modifier une note déjà laissée sur une bière",
+                "consumes": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id_biere",
+                        "type": "integer",
+                        "in": "path",
+                        "required": true,
+                        "description": "Identifiant de la bière."
+                    },
+                    {
+                        "name": "commentaire",
+                        "in": "body",
+                        "description": "La note de la bière",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "courriel": {
+                                    "type": "string",
+                                    "description": "Courriel de l'usager."
+                                },
+                                "note": {
+                                    "type": "number",
+                                    "maximum": 5,
+                                    "minimum": 0,
+                                    "description": "Note de l'usager."
+                                }
+                            },
+                            "required": [
+                                "courriel",
+                                "note"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Biere": {
+            "type": "object",
+            "properties": {
+                "id_biere": {
+                    "type": "integer",
+                    "description": "Identifiant de la bière dans le répertoire."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description de la bière."
+                },
+                "nom": {
+                    "type": "string",
+                    "description": "Nom de la bière."
+                },
+                "brasserie": {
+                    "type": "string",
+                    "description": "Nom de la brasserie."
+                },
+                "image": {
+                    "type": "string",
+                    "description": "URL de l'image du produit."
+                },
+                "date_ajout": {
+                    "type": "string",
+                    "description": "Date de l'ajout de la bière."
+                },
+                "date_modif": {
+                    "type": "string",
+                    "description": "Date de la dernière modification."
+                },
+                "moyenne": {
+                    "type": "number",
+                    "description": "Note moyenne accordée."
+                },
+                "nombre_note": {
+                    "type": "integer",
+                    "description": "Nombre d'usager ayant laissé une note."
+                }
+            }
+        },
+        "Commentaire": {
+            "type": "object",
+            "properties": {
+                "id_biere": {
+                    "type": "integer",
+                    "description": "Identifiant de la bière dans le répertoire."
+                },
+                "id_commentaire": {
+                    "type": "integer",
+                    "description": "Identifiant du commentaire."
+                },
+                "courriel": {
+                    "type": "string",
+                    "description": "Courriel de l'usager."
+                },
+                "date_ajout": {
+                    "type": "string",
+                    "description": "Date de l'ajout du commentaire."
+                },
+                "commentaire": {
+                    "type": "string",
+                    "description": "Le texte du commentaire."
+                }
+            }
+        },
+        "Note": {
+            "type": "object",
+            "properties": {
+                "id_biere": {
+                    "type": "integer",
+                    "description": "Identifiant de la bière dans le répertoire"
+                },
+                "note": {
+                    "type": "number",
+                    "description": "Moyenne des notes."
+                },
+                "nombre": {
+                    "type": "integer",
+                    "description": "Nombre de note accordé"
+                }
+            }
+        }
+    }
+}
