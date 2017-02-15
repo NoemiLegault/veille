@@ -9,7 +9,7 @@
     "schemes": [
         "http"
     ],
-    "basePath": "/webservice/php",
+    "basePath": "/",
     "produces": [
         "application/json"
     ],

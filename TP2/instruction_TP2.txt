@@ -1,0 +1,31 @@
+instruction TP2:
+
+
+/// MONGO DB ///////////////////////////////////////////////////////////
+Biero
+[
+	Biere
+	{
+		id: "",
+		nom: "",
+		brasserie: "",
+		Notes
+		[
+			note
+			{
+				courriel: "",
+				note: int()
+			}
+		],
+		
+		Commentaires
+		[
+			commentaire
+			{
+				courriel: "",
+				commentaire: ""
+			}
+		]
+	}
+]
+////////////////////////////////////////////////////////////////////////
